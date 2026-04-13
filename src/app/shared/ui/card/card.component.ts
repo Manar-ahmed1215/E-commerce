@@ -24,11 +24,9 @@ export class CardComponent  {
   isSuccessAdd = signal<string | null>(null);
   isLoadingWishlist = signal<string | null>(null);
 addToCart(productId: string): void {
-  // 1. تأكد أننا في المتصفح أولاً
+
   if (isPlatformBrowser(this.pLATFORM_ID)) {
     const token = localStorage.getItem('token');
-
-    // 2. لو التوكن موجود، نفذ الطلب
     if (token) {
       this.isLoadingAddCart.set(productId);
       this.cartService.addProductToCart(productId).subscribe({

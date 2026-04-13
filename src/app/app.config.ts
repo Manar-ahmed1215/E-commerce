@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes , withInMemoryScrolling({scrollPositionRestoration:"top"}) , withViewTransitions()), provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch() , withInterceptors([errorInterceptor , loadingInterceptor ,headerInterceptor])),
+    provideHttpClient(withFetch() , withInterceptors([headerInterceptor , loadingInterceptor ,errorInterceptor])),
     provideToastr(),
     importProvidersFrom(NgxSpinnerModule),
 
