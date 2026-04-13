@@ -53,11 +53,14 @@ export class NavbarComponent implements OnInit {
     this.authService.signOut()
   }
   getCartCount(): void {
-    const token = localStorage.getItem('token');
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+       const token = localStorage.getItem('token');
     if (!token) {
       this.cartService.cartCount.set(0);
       return;
     }
+    }
+   
 
     this.cartService.getLoggedUserCart().subscribe({
       next: (res) => {
@@ -70,11 +73,14 @@ export class NavbarComponent implements OnInit {
     });
   }
   getWishListCount(): void {
-    const token = localStorage.getItem('token');
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+        const token = localStorage.getItem('token');
     if (!token) {
       this.wishListService.wishListCount.set(0)
       return;
     }
+    }
+  
 
     this.wishListService.getLoggedWishlist().subscribe({
       next: (res) => {

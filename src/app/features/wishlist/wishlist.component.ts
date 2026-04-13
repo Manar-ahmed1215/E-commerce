@@ -67,7 +67,8 @@ wishCount = signal<number>(this.wishListService.wishListCount())
   }
   addToCart(productId: string): void {
     this.loadingAddProduct.set(productId)
-    if (localStorage.getItem('token')) {
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+       if (localStorage.getItem('token')) {
       this.cartService.addProductToCart(productId).subscribe({
         next: (res) => {
           // console.log(res)
@@ -82,6 +83,8 @@ wishCount = signal<number>(this.wishListService.wishListCount())
         }
       })
     }
+    }
+   
     else {
       this.toastrService.warning('Login Frist', 'FreshCart')
     }

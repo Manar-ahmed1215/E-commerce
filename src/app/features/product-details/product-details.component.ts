@@ -84,7 +84,8 @@ export class ProductDetailsComponent implements OnInit {
   }
   addToCart(productId: string): void {
     this.isloadingAddCart.set(true)
-    if (localStorage.getItem('token')) {
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+       if (localStorage.getItem('token')) {
       this.cartService.addProductToCart(productId).subscribe({
         next: (res) => {
           this.cartService.cartCount.set(res.numOfCartItems)
@@ -97,6 +98,8 @@ export class ProductDetailsComponent implements OnInit {
         }
       })
     }
+    }
+   
     else {
       this.toastrService.warning('Login Frist', 'FreshCart')
     }
@@ -132,7 +135,8 @@ export class ProductDetailsComponent implements OnInit {
   });
 }
   addToWishList(id: string): void {
-    if (localStorage.getItem('token')){
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+       if (localStorage.getItem('token')){
       this.isloadingAddWish.set(true);
     this.wishListService.addProductFromWishlist(id).subscribe({
       next: (res) => {
@@ -147,6 +151,8 @@ export class ProductDetailsComponent implements OnInit {
       }
     });
     }
+    }
+   
     else {
     this.toastrService.warning('Login First', 'FreshCart');
     this.isloadingAddWish.set(false);

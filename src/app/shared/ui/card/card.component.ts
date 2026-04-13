@@ -16,6 +16,7 @@ export class CardComponent  {
   private readonly cartService = inject(CartService)
   private readonly toastrService = inject(ToastrService)
   private readonly wishListService = inject(WishListService)
+  private readonly pLATFORM_ID = inject(PLATFORM_ID);
   wishlistIds = this.wishListService.wishlistIds;
   readonly Math = Math;
   product = input.required<Product>()
@@ -25,7 +26,8 @@ export class CardComponent  {
 
  addToCart(productId: string): void {
   this.isLoadingAddCart.set(productId);
-  if (localStorage.getItem('token')) {
+  if (isPlatformBrowser(this.pLATFORM_ID)){
+      if (localStorage.getItem('token')) {
     this.cartService.addProductToCart(productId).subscribe({
       next: (res) => {
         this.cartService.cartCount.set(res.numOfCartItems);
@@ -41,6 +43,8 @@ export class CardComponent  {
         this.isLoadingAddCart.set(null);
       }
     });
+  }
+
   } else {
     this.toastrService.warning('Login First', 'FreshCart');
     this.isLoadingAddCart.set(null);
@@ -49,7 +53,8 @@ export class CardComponent  {
 
   addToWishList(id: string): void {
     this.isLoadingWishlist.set(id);
-    if (localStorage.getItem('token')){
+    if (isPlatformBrowser(this.pLATFORM_ID)){
+        if (localStorage.getItem('token')){
        this.wishListService.addProductFromWishlist(id).subscribe({
       next: (res) => {
         // console.log("wishlist" , res)
@@ -63,6 +68,8 @@ export class CardComponent  {
       }
     });
     }
+    }
+  
     else {
     this.toastrService.warning('Login First', 'FreshCart');
     this.isLoadingWishlist.set(null);

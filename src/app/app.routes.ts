@@ -57,7 +57,8 @@ export const routes: Routes = [
     {
         path: "product-on-subcategory/:id",
         loadComponent: () => import('./features/product-on-subcategory/product-on-subcategory.component').then(m => m.ProductOnSubcategoryComponent), 
-        title: "Product On Subcategory"
+        title: "Product On Subcategory",
+        
     },
     {
         path: "category-details/:id/:slug",
