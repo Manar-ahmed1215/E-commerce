@@ -6,7 +6,7 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })

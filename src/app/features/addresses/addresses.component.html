@@ -62,7 +62,7 @@
 
    @else {
    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      @for (address of addressesList(); track address._id) {
+     @for (address of addressesList() || []; track address._id) {
       <div
          class="bg-white border border-gray-100 rounded-2xl p-5 flex justify-between items-start shadow-sm hover:shadow-md transition-shadow">
          <div class="flex gap-4">

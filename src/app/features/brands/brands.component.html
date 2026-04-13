@@ -49,8 +49,8 @@
             }
         } 
         @else {
-            @for (brand of brands() | paginate: { id: 'foo', itemsPerPage: pageSize(), currentPage: currentPage(), totalItems: totalItems() }; track brand._id) {
-                <div [routerLink]="['/brand-details', brand._id, brand.slug]"
+@for (brand of (brands() || []) | paginate: { id: 'foo', itemsPerPage: pageSize(), currentPage: currentPage(), totalItems: totalItems() }; track brand._id) {
+                   <div [routerLink]="['/brand-details', brand._id, brand.slug]"
                     class="group relative bg-white border border-gray-100 rounded-3xl p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl cursor-pointer text-center">
                     
                     <div class="overflow-hidden rounded-2xl bg-gray-50 p-4 mb-5 flex items-center justify-center h-40 transition-transform duration-500 group-hover:scale-105">

@@ -91,18 +91,20 @@ export class AddressesComponent implements OnInit {
     this.closeModal();
     this.getAllAddresses();
   }
-  closeModal(): void {
-    if (isPlatformBrowser(this.pLATFORM_ID)) {
-      const $modalElement: HTMLElement | null = document.querySelector('#address-modal');
-      if ($modalElement) {
-        const modal = new Modal($modalElement);
-        modal.hide();
-        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        document.querySelectorAll('[at-modal-backdrop]').forEach(el => el.remove());
-        document.body.classList.remove('overflow-hidden');
-      }
+closeModal(): void {
+  if (isPlatformBrowser(this.pLATFORM_ID)) {
+    const $modalElement: HTMLElement | null = document.querySelector('#address-modal');
+    
+    if ($modalElement) {
+      const modal = new Modal($modalElement);
+      modal.hide();
+      const backdrops = document.querySelectorAll('[shadow-backdrop], .modal-backdrop, [at-modal-backdrop]');
+      backdrops.forEach(el => el.remove());
+      document.body.style.overflow = 'auto';
+      document.body.classList.remove('overflow-hidden');
     }
   }
+}
 
   updateAddresse(address: UserAddress): void {
     this.currentAddressId.set(address._id);
