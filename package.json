@@ -1,6 +1,9 @@
 {
   "name": "e-commerce",
   "version": "0.0.0",
+  "config": {
+    "legacy-peer-deps": true
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
