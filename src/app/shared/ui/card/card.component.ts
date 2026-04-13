@@ -23,59 +23,57 @@ export class CardComponent  {
   isLoadingAddCart=signal<string |null>(null)
   isSuccessAdd = signal<string | null>(null);
   isLoadingWishlist = signal<string | null>(null);
+addToCart(productId: string): void {
+  // 1. تأكد أننا في المتصفح أولاً
+  if (isPlatformBrowser(this.pLATFORM_ID)) {
+    const token = localStorage.getItem('token');
 
- addToCart(productId: string): void {
-  this.isLoadingAddCart.set(productId);
-  if (isPlatformBrowser(this.pLATFORM_ID)){
-      if (localStorage.getItem('token')) {
-    this.cartService.addProductToCart(productId).subscribe({
-      next: (res) => {
-        this.cartService.cartCount.set(res.numOfCartItems);
-        this.toastrService.success(res.message, 'FreshCart');
-        this.isLoadingAddCart.set(null);
-        this.isSuccessAdd.set(productId);
-        setTimeout(() => {
-          this.isSuccessAdd.set(null);
-        }, 1000);
-      },
-      error: (err) => {
-        console.log(err);
-        this.isLoadingAddCart.set(null);
-      }
-    });
-  }
+    // 2. لو التوكن موجود، نفذ الطلب
+    if (token) {
+      this.isLoadingAddCart.set(productId);
+      this.cartService.addProductToCart(productId).subscribe({
+        next: (res) => {
+          this.cartService.cartCount.set(res.numOfCartItems);
+          this.toastrService.success(res.message, 'FreshCart');
+          this.isLoadingAddCart.set(null);
+          this.isSuccessAdd.set(productId);
+          setTimeout(() => this.isSuccessAdd.set(null), 1000);
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoadingAddCart.set(null);
+        }
+      });
+    } 
 
-  } else {
-    this.toastrService.warning('Login First', 'FreshCart');
-    this.isLoadingAddCart.set(null);
+    else {
+      this.toastrService.warning('Please Login First', 'FreshCart');
+      this.isLoadingAddCart.set(null);
+    }
   }
 }
+addToWishList(id: string): void {
+  if (isPlatformBrowser(this.pLATFORM_ID)) {
+    const token = localStorage.getItem('token');
 
-  addToWishList(id: string): void {
-    this.isLoadingWishlist.set(id);
-    if (isPlatformBrowser(this.pLATFORM_ID)){
-        if (localStorage.getItem('token')){
-       this.wishListService.addProductFromWishlist(id).subscribe({
-      next: (res) => {
-        // console.log("wishlist" , res)
-        this.wishListService.wishlistIds.set(res.data);
-        this.toastrService.success(res.message, 'FreshCart');
-        this.wishListService.wishListCount.set(res.data.length)
-        this.isLoadingWishlist.set(null);
-      },
-      error:()=>{
-        this.isLoadingWishlist.set(null);
-      }
-    });
-    }
-    }
-  
+    if (token) {
+      this.isLoadingWishlist.set(id);
+      this.wishListService.addProductFromWishlist(id).subscribe({
+        next: (res) => {
+          this.wishListService.wishlistIds.set(res.data);
+          this.toastrService.success(res.message, 'FreshCart');
+          this.wishListService.wishListCount.set(res.data.length);
+          this.isLoadingWishlist.set(null);
+        },
+        error: () => this.isLoadingWishlist.set(null)
+      });
+    } 
     else {
-    this.toastrService.warning('Login First', 'FreshCart');
-    this.isLoadingWishlist.set(null);
+      this.toastrService.warning('Please Login First', 'FreshCart');
+      this.isLoadingWishlist.set(null);
+    }
   }
-   
-  }
+}
 
 
   removeToWishList(id: string): void {
