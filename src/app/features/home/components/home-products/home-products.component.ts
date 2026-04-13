@@ -18,17 +18,19 @@ export class HomeProductsComponent implements OnInit{
   private readonly pLATFORM_ID = inject(PLATFORM_ID);
 
   productList =signal<Product[]>([])
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.pLATFORM_ID)) {
-      this.wishListService.getLoggedWishlist().subscribe({
-        next: (res) => {
-          const ids = res.data.map((item: any) => item._id);
-          this.wishListService.wishlistIds.set(ids);
-        }
-      });
-    }
-      this.getProductsData()
+ ngOnInit(): void {
+  if (isPlatformBrowser(this.pLATFORM_ID)) {
+    
+    this.wishListService.getLoggedWishlist().subscribe({
+      next: (res) => {
+        const ids = res.data.map((item: any) => item._id);
+        this.wishListService.wishlistIds.set(ids);
+      }
+    });
+
+    this.getProductsData();
   }
+}
   getProductsData(){
     this.productsService.getAllProducts().subscribe({
       next:(res)=>{
