@@ -1,0 +1,311 @@
+<nav class="sticky top-0 z-40 w-full border-b border-gray-100 bg-white  font-sans">
+<div class="bg-gray-50 border-b border-gray-100 py-2">
+  <div class="max-w-full mx-auto px-2 flex flex-row flex-nowrap justify-between items-center text-[9px] sm:text-[10px] md:text-[11px] text-gray-500 overflow-x-auto">
+
+    <!-- Left -->
+    <div class="flex items-center gap-2 whitespace-nowrap">
+      <span class="flex items-center gap-1">
+        <i class="fa-solid fa-truck text-green-600"></i> 
+        <span class="hidden sm:inline">Free Shipping</span> 500 EGP
+      </span>
+
+      <span class="h-3 w-[1px] bg-gray-300"></span>
+
+      <span class="flex items-center gap-1">
+        <i class="fa-solid fa-gift text-green-600"></i> 
+        New
+      </span>
+    </div>
+
+    <!-- Right -->
+    <div class="flex items-center gap-2 whitespace-nowrap">
+
+      <div class="hidden sm:flex items-center">
+        <span><i class="fa-solid fa-phone"></i> +1 (800) 123-4567</span>
+      </div>
+
+      <span class="h-3 w-[1px] bg-gray-300"></span>
+
+      @if (!logged()) {
+        <a routerLink="/login" class="flex items-center gap-1 hover:text-green-600 transition-colors">
+          <i class="fa-regular fa-user"></i>
+          <span class="hidden sm:inline">Sign In</span>
+        </a>
+
+        <a routerLink="/register" class="flex items-center gap-1 hover:text-green-600 transition-colors">
+          <i class="fa-solid fa-user-plus"></i>
+          <span class="hidden sm:inline">Sign Up</span>
+        </a>
+      } @else {
+        <span class="flex items-center gap-1 text-gray-700 font-medium">
+          <i class="fa-regular fa-user"></i> 
+          <span class="hidden sm:inline">{{userName()}}</span>
+        </span>
+
+        <button (click)="logOut()" class="flex items-center gap-1 hover:text-red-600 transition-colors cursor-pointer">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="hidden sm:inline">Sign Out</span>
+        </button>
+      }
+    </div>
+
+  </div>
+</div>
+  <div class="max-w-screen-full flex flex-wrap items-center justify-between mx-auto p-4 gap-4">
+    <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse flex-shrink-0">
+      <img src="/assets/fresh-logo.svg" class="h-8" alt="FreshCart Logo" />
+    </a>
+
+    <div class="flex-grow max-w-lg hidden lg:block relative">
+      <div class="relative">
+  <input 
+    #searchInput
+    type="text"
+    (keyup.enter)="onNavbarSearch(searchInput.value)"
+    class="block w-full p-2.5 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-green-500 focus:border-green-500"
+    placeholder="Search for products...">
+  
+  <button
+    [routerLink]="['/search']"
+    [queryParams]="{ keyword: searchInput.value }"
+    class="absolute top-0 end-0 h-full p-2.5 text-sm font-medium text-white bg-green-600 rounded-e-lg border border-green-600 hover:bg-green-700">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+</div>
+    </div>
+
+    <div class="flex items-center md:order-2 space-x-6 rtl:space-x-reverse">
+      <div class="hidden xl:flex items-center gap-3 border-l border-gray-100 pl-4">
+        <div class="w-9 h-9 bg-green-50 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-headset text-green-600"></i>
+        </div>
+        <div class="flex flex-col leading-none">
+          <span class="text-[9px] text-gray-400 uppercase font-bold">Support</span>
+          <span class="text-xs font-bold text-gray-800">24/7 Help</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4 text-gray-600">
+        <button
+        routerLink="/wishlist"
+          class="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition-all hover:bg-gray-100 hover:text-emerald-600">
+          <i class="far fa-heart text-xl"></i>
+         @if(wishListCount() >0){
+ <span
+            class="absolute right-1 top-1 rounded-full border-2 border-white bg-emerald-600 px-1.5 text-2xs font-bold text-white">{{wishListCount()}}</span>
+        
+         }
+         
+          </button>
+        <button
+        routerLink="/cart"
+          class="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition-all hover:bg-gray-100 hover:text-emerald-600">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          @if(count() >0){
+             <span
+            class="absolute right-1 top-1 rounded-full border-2 border-white bg-emerald-600 px-1.5 text-2xs font-bold text-white">{{count()}}</span>
+        
+          }
+         
+          </button>
+
+        @if (!logged()) {
+        <a routerLink="/login"
+          class="bg-green-600 text-white px-5 py-2 rounded-full flex items-center gap-2 hover:bg-green-700 transition-all text-sm font-bold shadow-sm">
+          <i class="fa-regular fa-user text-white"></i> Sign In
+        </a>
+        } @else {
+        <button type="button" class="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-100"
+          id="user-menu-button" data-dropdown-toggle="user-dropdown">
+          <i class="fa-regular fa-circle-user text-2xl hover:text-green-600 transition-colors"></i>
+        </button>
+        }
+      </div>
+
+      <button type="button" data-drawer-target="drawer-right" data-drawer-show="drawer-right"
+        data-drawer-placement="right" aria-controls="drawer-right"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+      <ul
+        class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
+        <li><a routerLink="/" routerLinkActive="text-green-600" [routerLinkActiveOptions]="{ exact: true }"
+            class="block py-2 px-3 text-gray-900 rounded hover:text-green-600 md:p-0 transition-colors">Home</a></li>
+        <li><a routerLink="/shop" routerLinkActive="text-green-600"
+            class="block py-2 px-3 text-gray-900 rounded hover:text-green-600 md:p-0 transition-colors">Shop</a></li>
+
+        <li class="group relative">
+          <button
+            class="flex items-center gap-1 py-2 md:py-0 font-medium text-gray-700 transition-colors group-hover:text-green-600">
+            Categories
+            <i
+              class="fas fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+          </button>
+          <div
+            class="invisible absolute left-0 z-50 mt-0 w-48 rounded-lg border border-gray-100 bg-white opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:opacity-100">
+            <ul class="py-2 text-sm text-gray-700">
+              <li><a routerLink="/categories" class="block px-4 py-2 hover:bg-green-50 hover:text-green-600">All
+                  Categories</a></li>
+              @for (category of categories(); track category._id) {
+              <li><a [routerLink]="['/product-on-category', category._id]"
+                  class="block px-4 py-2 hover:bg-green-50 hover:text-green-600">{{category.name}}</a></li>
+              }
+            </ul>
+          </div>
+        </li>
+
+        <li><a routerLink="/brands" routerLinkActive="text-green-600"
+            class="block py-2 px-3 text-gray-900 rounded hover:text-green-600 md:p-0 transition-colors">Brands</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+@if (logged()) {
+<div
+  class="z-50 hidden w-64 text-base list-none bg-white divide-y divide-gray-100 rounded-2xl shadow-2xl border border-gray-50"
+  id="user-dropdown">
+  <div class="flex items-center px-5 py-6 space-x-4">
+    <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+      <i class="fa-regular fa-user text-green-600 text-xl"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-lg font-bold text-slate-800 truncate">{{userName()}}</p>
+    </div>
+  </div>
+
+  <ul class="py-2 text-slate-600">
+    <li>
+      <a routerLink="/profile/address"
+        class="flex items-center px-6 py-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+        <div class="w-8"><i class="fa-regular fa-user text-lg text-slate-400 group-hover:text-green-600"></i></div>
+        <span class="text-[15px] font-medium">My Profile</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/allorders"
+        class="flex items-center px-6 py-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+        <div class="w-8"><i class="fa-solid fa-box-archive text-lg text-slate-400 group-hover:text-green-600"></i></div>
+        <span class="text-[15px] font-medium">My Orders</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/wishlist"
+        class="flex items-center px-6 py-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+        <div class="w-8"><i class="fa-regular fa-heart text-lg text-slate-400 group-hover:text-green-600"></i></div>
+        <span class="text-[15px] font-medium">My Wishlist</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/profile/address"
+        class="flex items-center px-6 py-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+        <div class="w-8"><i class="fa-regular fa-address-book text-lg text-slate-400 group-hover:text-green-600"></i>
+        </div>
+        <span class="text-[15px] font-medium">Addresses</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/profile/setting"
+        class="flex items-center px-6 py-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+        <div class="w-8"><i class="fa-solid fa-gear text-lg text-slate-400 group-hover:text-green-600"></i></div>
+        <span class="text-[15px] font-medium">Settings</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="py-2">
+    <button (click)="logOut()"
+      class="w-full flex items-center px-6 py-4 text-red-500 hover:bg-red-50 transition-colors group cursor-pointer">
+      <div class="w-8"><i class="fa-solid fa-right-from-bracket text-lg"></i></div>
+      <span class="text-[15px] font-bold">Sign Out</span>
+    </button>
+  </div>
+</div>
+}
+<!-- --------------- navbar responsive ---------------- -->
+
+<div id="drawer-right"
+  class="fixed top-0 right-0 z-50 h-screen w-80 translate-x-full overflow-y-auto bg-white p-6 shadow-2xl transition-transform duration-300"
+  tabindex="-1">
+  <div class="mb-8 flex items-center justify-between">
+    <img src="/assets/fresh-logo.svg" alt="FreshCart Logo" class="h-8" />
+    <button type="button" data-drawer-hide="drawer-right"
+      class="rounded-full bg-gray-50 p-2 text-gray-400 hover:bg-gray-200 transition-colors">
+      <i class="fas fa-times text-xl"></i>
+    </button>
+  </div>
+
+  <div class="relative mb-8">
+    <input type="text" placeholder="Search products..."
+      class="w-full rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500" />
+    <button class="absolute right-3 top-3 text-green-600">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+
+  <nav class="mb-6 border-b border-gray-100 pb-4">
+    <ul class="space-y-6 text-base font-semibold text-gray-700">
+      <li><a routerLink="/" routerLinkActive="text-green-600" [routerLinkActiveOptions]="{ exact: true }"
+          data-drawer-hide="drawer-right" class="block hover:text-green-600 transition-colors cursor-pointer">Home</a>
+      </li>
+      <li><a routerLink="/shop" data-drawer-hide="drawer-right"
+          class="block hover:text-green-600 transition-colors cursor-pointer">Shop</a></li>
+      <li><a routerLink="/categories" data-drawer-hide="drawer-right"
+          class="block hover:text-green-600 transition-colors cursor-pointer">Categories</a></li>
+      <li><a routerLink="/brands" data-drawer-hide="drawer-right"
+          class="block hover:text-green-600 transition-colors cursor-pointer">Brands</a></li>
+    </ul>
+  </nav>
+
+  <div class="mb-6 space-y-4 border-b border-gray-100 pb-6">
+    <a routerLink="/wishlist" data-drawer-hide="drawer-right" class="flex items-center gap-4 group cursor-pointer">
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-500 transition-all group-hover:bg-red-500 group-hover:text-white">
+        <i class="far fa-heart text-lg"></i>
+      </div>
+      <span class="font-bold text-gray-600 group-hover:text-red-600 transition-colors">Wishlist</span>
+    </a>
+
+    <a routerLink="/cart" data-drawer-hide="drawer-right" class="flex items-center gap-4 group cursor-pointer">
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-50 text-green-600 transition-all group-hover:bg-green-600 group-hover:text-white">
+        <i class="fas fa-shopping-cart text-lg"></i>
+      </div>
+      <span class="font-bold text-gray-600 group-hover:text-green-600 transition-colors">Cart</span>
+    </a>
+  </div>
+
+  <div class="space-y-4">
+    @if (!logged()) {
+    <a routerLink="/login" data-drawer-hide="drawer-right" class="flex items-center gap-4 group cursor-pointer">
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-500 group-hover:bg-green-600 group-hover:text-white transition-all">
+        <i class="far fa-user text-lg"></i>
+      </div>
+      <span class="font-bold text-gray-600 group-hover:text-green-600 transition-colors">Sign In</span>
+    </a>
+    } @else {
+    <div class="flex items-center gap-4 mb-2">
+      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+        <i class="far fa-user text-xl"></i>
+      </div>
+      <span class="font-bold text-gray-800 text-lg truncate">{{ userName() }}</span>
+    </div>
+
+    <button (click)="logOut()" data-drawer-hide="drawer-right"
+      class="flex w-full items-center gap-4 text-red-500 group transition-colors">
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 group-hover:bg-red-500 group-hover:text-white transition-all">
+        <i class="fas fa-right-from-bracket"></i>
+      </div>
+      <span class="font-bold">Sign Out</span>
+    </button>
+    }
+  </div>
+</div>

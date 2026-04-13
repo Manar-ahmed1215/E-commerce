@@ -1,0 +1,221 @@
+<div class="mb-8">
+    <h2 class="text-2xl font-bold text-slate-800">Account Settings</h2>
+    <p class="text-slate-500 text-sm mt-1">Update your profile information and change your password</p>
+</div>
+<div
+    class="bg-white border border-gray-100 rounded-2xl shadow-sm min-h-[500px] animate-fade-in flex flex-col w-full overflow-hidden">
+
+    <div class="p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-8">
+            <div
+                class="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">Profile Information</h3>
+                <p class="text-slate-400 text-sm">Update your personal details</p>
+            </div>
+        </div>
+
+        <form [formGroup]="UpdateForm" (ngSubmit)="submitForm()" class="space-y-6">
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">Full Name</label>
+                    <input formControlName="name" type="text"
+                        class="bg-white border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all"
+                        placeholder="Alisa Buckley">
+                    @let nameControl =UpdateForm.get('name');
+
+                    @if (nameControl?.invalid && nameControl?.touched) {
+                    <div class="flex px-4 py-2 mt-2 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
+                        role="alert">
+                        <span class="sr-only">Danger</span>
+
+                        <div>
+                            <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+                                @if (nameControl?.hasError('required')) {
+                                <li>Full Name is required.</li>
+                                }
+                                @else if (nameControl?.hasError('minlength')) {
+                                <li>Name must be at least 3 characters</li>
+                                }
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">Email Address</label>
+                    <input formControlName="email" type="email"
+                        class="bg-white border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all"
+                        placeholder="Enter your email">
+                    @let emailControl =UpdateForm.get('email');
+
+                    @if (emailControl?.invalid && emailControl?.touched) {
+                    <div class="flex px-4 py-2 mt-2 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
+                        role="alert">
+                        <span class="sr-only">Danger</span>
+
+                        <div>
+                            <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+                                @if (emailControl?.hasError('required')) {
+                                <li>Email is required.</li>
+                                }
+                                @else if (emailControl?.hasError('email')) {
+                                <li>Please enter a valid email address.</li>
+                                }
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">Phone Number</label>
+                    <input formControlName="phone" type="tel"
+                        class="bg-white border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 transition-all"
+                        placeholder="01xxxxxxxxx">
+
+                    @let phoneControl =UpdateForm.get('phone');
+
+                    @if (phoneControl?.invalid && phoneControl?.touched) {
+                    <div class="flex px-4 py-2 mt-2 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
+                        role="alert">
+                        <span class="sr-only">Danger</span>
+
+                        <div>
+                            <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+                                @if (phoneControl?.hasError('required')) {
+                                <li>Phone is required.</li>
+                                }
+                                @else if (phoneControl?.hasError('pattern')) {
+                                <li>Please enter a valid Egyptian phone number (e.g., 01012345678).</li>
+                                }
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-md shadow-green-100 flex items-center gap-2">
+                    <i class="fa-solid fa-save"></i>
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="bg-gray-50/80 border-t border-gray-100 p-6 md:p-8 mt-auto">
+        <h3 class="text-lg font-bold text-slate-800 mb-6">Account Information</h3>
+
+        <div class="space-y-1">
+            <div class="flex items-center justify-between py-3 border-b border-gray-200/50">
+                <span class="text-sm font-medium text-slate-500">User ID</span>
+                <span class="text-sm font-mono text-slate-600">{{userData().id}}</span>
+            </div>
+
+            <div class="flex items-center justify-between py-3">
+                <span class="text-sm font-medium text-slate-500">Role</span>
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                    {{userData().role}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!------------------------------------rePassword------------->
+<div
+    class="bg-white border border-gray-100 rounded-2xl shadow-sm animate-fade-in flex flex-col w-full overflow-hidden mt-8">
+
+    <div class="p-6 md:p-8 border-b border-gray-100">
+        <div class="flex items-center gap-4">
+            <div
+                class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-orange-100/50">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 tracking-tight">Change Password</h3>
+                <p class="text-slate-400 text-sm mt-0.5">Update your account password to stay secure</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-6 md:p-8">
+        <form [formGroup]="updatePasswordForm" (ngSubmit)="submitPassword()" class="space-y-6">
+
+            <div class="grid grid-cols-1 gap-6">
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">Current Password</label>
+                    <div class="relative">
+                        <input formControlName="currentPassword" type="password"
+                            class="bg-gray-50/50 border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition-all placeholder:text-gray-300"
+                            placeholder="Enter your current password">
+                    </div>
+                    @if(updatePasswordForm.get('currentPassword')?.invalid &&
+                    updatePasswordForm.get('currentPassword')?.touched){
+                    <div class="text-red-500 text-xs mt-1 animate-fade-in">
+                        @if(updatePasswordForm.get('currentPassword')?.errors?.['required']){
+                        <span>Current password is required.</span>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">New Password</label>
+                    <div class="relative">
+                        <input formControlName="password" type="password"
+                            class="bg-gray-50/50 border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition-all placeholder:text-gray-300"
+                            placeholder="Enter your new password">
+                    </div>
+                    <p class="mt-2 text-xs text-gray-400">Must be at least 6 characters</p>
+                    @if(updatePasswordForm.get('password')?.invalid && updatePasswordForm.get('password')?.touched){
+                    <div class="text-red-500 text-xs mt-1">
+                        @if(updatePasswordForm.get('password')?.errors?.['required']){ <span>Password is
+                            required.</span> }
+                        @if(updatePasswordForm.get('password')?.errors?.['minlength']){ <span>Minimum length is 6
+                            characters.</span> }
+                    </div>
+                    }
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-slate-700">Confirm New Password</label>
+                    <div class="relative">
+                        <input formControlName="rePassword" type="password"
+                            class="bg-gray-50/50 border border-gray-200 text-slate-900 text-sm rounded-xl focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition-all placeholder:text-gray-300"
+                            placeholder="Confirm your new password">
+                    </div>
+                    @if(updatePasswordForm.get('rePassword')?.touched &&
+                    updatePasswordForm.get('rePassword')?.hasError('mismatch')){
+                    <p class="text-red-500 text-xs mt-1 italic">Passwords do not match.</p>
+                    }
+                </div>
+
+            </div>
+
+            <div class="pt-4">
+                <button type="submit"
+                    class="flex items-center justify-center gap-2 bg-[#f17e0a] hover:bg-[#d96f08] text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-orange-100 active:scale-[0.98]">
+                    <i class="fa-solid fa-key text-xs"></i>
+                    Change Password
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

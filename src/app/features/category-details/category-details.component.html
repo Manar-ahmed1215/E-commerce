@@ -1,0 +1,107 @@
+<section class="min-h-screen bg-gray-50">
+    <div class="bg-[#22c55e] p-8 text-white">
+        <div class="container mx-auto">
+            <nav class="flex mb-4 text-sm" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3 text-green-100">
+                    <li class="inline-flex items-center">
+                        <a (click)="backToHome()"
+                            class="font-medium hover:text-white transition-colors cursor-pointer">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span> <a routerLink="/categories"
+                            class="font-medium hover:text-white transition-colors cursor-pointer">
+                            Categories
+                        </a>
+                    </li>
+
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span>
+                        <span class="font-bold text-white"> {{categoryDetails().name}}
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <div
+                    class="bg-white/20 p-1 rounded-lg backdrop-blur-sm overflow-hidden w-20 h-20 flex items-center justify-center">
+                    <img [src]="categoryDetails().image" [alt]="categoryDetails().name"
+                        class="w-full h-full object-contain rounded-md shadow-sm">
+                </div>
+                <div>
+                    <h1 class="text-4xl font-extrabold tracking-tight">{{categoryDetails().name}}</h1>
+                    <p class="text-lg opacity-90 mt-1">Choose a subcategory to browse products</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto py-8 px-4">
+        <div class="flex flex-col gap-4 mb-8">
+            <button routerLink="/categories"
+                class="flex items-center text-gray-600 hover:text-green-600 transition-colors w-fit">
+                <i class="fa-solid fa-arrow-left mr-2"></i>
+                Back to Categories
+            </button>
+        </div>
+        @if(subCategories().length === 0){
+        <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-40">
+            <div class="relative mb-8">
+                <div class="mx-auto w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                    <i class="fa-regular fa-folder-open text-gray-400 text-4xl"></i>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                No Subcategories Found
+            </h2>
+            <p class="text-gray-500 mb-8 font-medium">
+                This category doesn't have any subcategories yet.
+            </p>
+
+            <button [routerLink]="['/product-on-category' , categoryId() ]"
+                class="inline-flex items-center justify-center bg-[#19a449] hover:bg-[#158a3d] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 group cursor-pointer">
+                View All Products in
+                <i class="fa-solid fa-arrow-right ms-2 transition-transform group-hover:translate-x-1"></i>
+            </button>
+        </div>
+        }
+        @else {
+        <h2 class="text-xl font-bold text-gray-800">40 Subcategories in SuperMarket</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @for (subCategory of subCategories(); track subCategory._id) {
+            <div
+                class="group relative p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer flex flex-col gap-4 overflow-hidden">
+
+                <div
+                    class="bg-green-50 w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-green-100">
+                    <i class="fa-solid fa-folder text-green-500 text-xl"></i>
+                </div>
+
+                <div>
+                    <h3
+                        class="font-bold text-gray-800 text-lg transition-colors duration-300 group-hover:text-green-600">
+                        {{subCategory.name}}
+                    </h3>
+
+                    <div
+                    [routerLink]="['/product-on-subcategory' ,subCategory._id]"
+                        class="flex items-center text-green-600 text-sm font-medium mt-2 opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                        <span>Browse Products</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+            }
+
+
+
+
+        </div>
+        }
+
+    </div>
+</section>

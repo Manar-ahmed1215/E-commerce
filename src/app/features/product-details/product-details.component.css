@@ -1,0 +1,38 @@
+.thumbs-swiper-prod {
+  width: 100%;
+}
+
+.thumbs-swiper-prod swiper-slide {
+  height: auto;
+}
+.thumbs-swiper-prod .swiper-slide-thumb-active .thumb-wrapper {
+  border-color: #3b82f6; 
+  border-width: 2px;
+}
+
+.thumb-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.related-products-swiper {
+  height: auto;
+  align-items: stretch; 
+}
+
+swiper-slide {
+  height: auto !important;
+  display: flex;
+}
+swiper-slide app-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .card-container { 
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

@@ -1,0 +1,100 @@
+<div
+  class="flex flex-col h-full bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300 group font-sans">
+
+  <div class="relative overflow-hidden mb-4 flex-shrink-0">
+    @if (product().priceAfterDiscount && product().priceAfterDiscount! < product().price) { <div
+      class="absolute top-0 left-0 z-10 bg-red-600 text-white text-[11px] font-bold px-2 py-1 rounded-br-lg shadow-sm">
+      -{{ Math.round(100 - (product().priceAfterDiscount! / product().price) * 100) }}%
+  </div>
+  }
+<img 
+  [ngSrc]="product().imageCover" 
+  [alt]="product().title" 
+  width="300" 
+  height="200"
+  disableOptimizedImageSizeWarning
+  class="w-full h-48 object-contain" 
+/>
+  <div class="absolute top-2 right-2 flex flex-col gap-2">
+ @if (isLoadingWishlist() === product()._id) {
+    <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-600 cursor-not-allowed">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+    </button>
+  } 
+  @else {
+    @if (wishlistIds().includes(product()._id)) {
+      <button (click)="removeToWishList(product()._id)"
+        class="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center cursor-pointer justify-center cursor-pointer text-red-600 hover:bg-red-50 transition-all">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    } 
+    @else {
+      <button (click)="addToWishList(product()._id)"
+        class="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center  text-gray-600 hover:bg-emerald-50 transition-all">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+    }
+  }
+
+    <button
+      class="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white transition-all">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <button [routerLink]="['/product-details' , product()._id ,product().slug]"
+      class="w-10 cursor-pointer h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white transition-all">
+      <i class="far fa-eye"></i>
+    </button>
+  </div>
+</div>
+
+<div class="flex flex-col flex-grow space-y-1">
+  <p class="text-xs text-gray-400 tracking-wide">{{product().category.name}} </p>
+
+  <h3 class="text-lg font-medium text-slate-800 hover:text-emerald-600 cursor-pointer transition-colors line-clamp-3">
+    {{product().title}}
+  </h3>
+
+  <div class="flex items-center gap-1 mt-2">
+    <div class="flex items-center text-yellow-400 text-sm">
+      @for (num of [1, 2, 3, 4, 5]; track num) {
+      @if (num <= product().ratingsAverage) { <i class="fas fa-star  text-yellow-400"></i>
+        } @else if (num - product().ratingsAverage < 1 && num - product().ratingsAverage> 0) {
+          <i class="fas fa-star-half-alt  text-yellow-400"></i>
+          } @else {
+          <i class="far fa-star  text-yellow-400"></i>
+          }
+          }
+    </div>
+
+    <span class="text-xs text-gray-500 font-medium ms-1">
+      {{product().ratingsAverage}} ({{product().ratingsQuantity}})
+    </span>
+  </div>
+
+  <div class="flex items-center justify-between pt-2 mt-auto border-t border-gray-50">
+    <div class="flex items-baseline gap-2">
+      @if (product().priceAfterDiscount) {
+      <span class="text-lg font-bold text-emerald-600">{{product().priceAfterDiscount}} EGP</span>
+      <span class="text-xs text-gray-400 line-through">{{product().price}} EGP</span>
+      } @else {
+      <span class="text-lg font-bold text-slate-900">{{product().price}} EGP</span>
+      }
+    </div>
+<button (click)="addToCart(product()._id)"
+  [disabled]="isLoadingAddCart() === product()._id"
+  class="w-9 h-9 bg-emerald-600 text-white rounded-full flex items-center justify-center hover:bg-emerald-700 transition-all cursor-pointer active:scale-90 disabled:bg-emerald-400 disabled:cursor-not-allowed">
+  
+  @if (isLoadingAddCart() === product()._id) {
+    <i class="fas fa-spinner fa-spin text-xs"></i>
+  } 
+  @else if (isSuccessAdd() === product()._id) {
+    <i class="fas fa-check text-xs"></i>
+  } 
+  @else {
+    <i class="fas fa-plus text-xs"></i>
+  }
+</button>
+  </div>
+</div>
+</div>

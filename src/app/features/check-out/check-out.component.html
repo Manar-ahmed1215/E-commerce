@@ -1,0 +1,273 @@
+<section class="bg-gray-50 min-h-screen py-10">
+  <div class="max-w-full mx-auto px-4">
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <span class="bg-[#138D46] text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-sm">
+            <i class="fa-solid fa-truck-fast"></i>
+          </span>
+          Checkout
+        </h1>
+        <p class="text-gray-500 mt-1 ml-13">Complete your shipping and payment details</p>
+      </div>
+      <a routerLink="/cart" class="text-[#138D46] hover:underline font-bold flex items-center gap-2 transition-all">
+        <i class="fa-solid fa-arrow-left-long"></i> Back to Cart
+      </a>
+    </div>
+
+    <form [formGroup]="checkOut" (ngSubmit)="submitForm()" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <div class="lg:col-span-8 space-y-6">
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="bg-[#138D46] text-white p-4 flex items-center gap-3">
+            <i class="fa-solid fa-house-chimney"></i>
+            <h2 class="font-bold">Shipping Address</h2>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div class="flex items-center gap-4 bg-blue-50 text-blue-700 p-4 rounded-xl border border-blue-100">
+              <i class="fa-solid fa-circle-info text-xl"></i>
+              <div>
+                <div class="font-bold text-sm">Delivery Information</div>
+                <p class="text-xs opacity-80">Please ensure your address is accurate for smooth delivery</p>
+              </div>
+            </div>
+
+            <div formGroupName="shippingAddress" class="space-y-5">
+
+              <div>
+                <label class="block mb-2 text-sm font-bold text-gray-700">City <span
+                    class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                    <i class="fa-solid fa-city"></i>
+                  </div>
+                  <input formControlName="city" type="text"
+                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:bg-white transition-all outline-none"
+                    [class.border-red-500]="checkOut.get('shippingAddress.city')?.invalid && checkOut.get('shippingAddress.city')?.touched"
+                    placeholder="e.g. Cairo, Alexandria" />
+                </div>
+
+                @let cityControl = checkOut.get('shippingAddress.city');
+                @if (cityControl?.hasError('required') && cityControl?.touched) {
+                <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation"></i> City is required.
+                </p>
+                }
+              </div>
+
+              <div>
+                <label class="block mb-2 text-sm font-bold text-gray-700">Street Address <span
+                    class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute top-4 left-4 text-gray-400">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <textarea formControlName="details" rows="3"
+                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:bg-white transition-all outline-none"
+                    [class.border-red-500]="checkOut.get('shippingAddress.details')?.invalid && checkOut.get('shippingAddress.details')?.touched"
+                    placeholder="Street name, building number..."></textarea>
+                </div>
+
+                @let detailsControl = checkOut.get('shippingAddress.details');
+                @if (detailsControl?.hasError('required') && detailsControl?.touched) {
+                <p class="text-red-500 text-xs mt-2 font-medium flex items-center gap-1">
+                  <i class="fa-solid fa-circle-exclamation"></i> Address details are required.
+                </p>
+                }
+              </div>
+
+              <div>
+                <label class="block mb-2 text-sm font-bold text-gray-700">Phone Number <span
+                    class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                    <i class="fa-solid fa-phone"></i>
+                  </div>
+                  <input formControlName="phone" type="tel"
+                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:bg-white transition-all outline-none"
+                    [class.border-red-500]="checkOut.get('shippingAddress.phone')?.invalid && checkOut.get('shippingAddress.phone')?.touched"
+                    placeholder="01xxxxxxxxx" />
+                </div>
+
+                @let phoneControl = checkOut.get('shippingAddress.phone');
+                @if (phoneControl?.invalid && phoneControl?.touched) {
+                <div class="mt-2">
+                  @if (phoneControl?.hasError('required')) {
+                  <p class="text-red-500 text-xs font-medium flex items-center gap-1">
+                    <i class="fa-solid fa-circle-exclamation"></i> Phone is required.
+                  </p>
+                  }
+                  @else if (phoneControl?.hasError('pattern')) {
+                  <p class="text-red-500 text-xs font-medium flex items-center gap-1">
+                    <i class="fa-solid fa-circle-exclamation"></i> Use a valid Egyptian number.
+                  </p>
+                  }
+                </div>
+                }
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="bg-[#138D46] text-white p-4 flex items-center gap-3">
+            <i class="fa-solid fa-credit-card"></i>
+            <h2 class="font-bold">Payment Method</h2>
+          </div>
+          <div class="group grid p-6 md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 space-y-6">
+              <div class="space-y-4">
+                <label for="payment-cod" class="block relative">
+                  <input #ref1 type="radio" id="payment-cod" name="payment_method" value="cash" class="peer sr-only"
+                    checked (change)="changeFlag(ref1)" />
+
+                  <div
+                    class="p-5 bg-white border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-200 ease-in-out peer-checked:border-green-500 peer-checked:bg-green-50/50 hover:border-green-300">
+                    <div class="flex items-center justify-between gap-4">
+                      <div class="flex items-center gap-4 grow">
+                        <div
+                          class="w-14 h-14 bg-green-500 text-white rounded-xl flex items-center justify-center transition-colors peer-checked:bg-green-500">
+                          <i class="fas fa-money-bill-wave text-xl"></i>
+                        </div>
+                        <div>
+                          <h3 class="font-bold text-lg text-green-800">Cash on Delivery</h3>
+                          <p class="text-sm text-gray-500">
+                            Pay when your order arrives at your doorstep
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label for="payment-card" class="block relative">
+                  <input #ref2 type="radio" id="payment-card" name="payment_method" value="visa" class="peer sr-only"
+                    (change)="changeFlag(ref2)" />
+
+                  <div
+                    class="p-5 bg-white border-2 border-gray-200 rounded-2xl cursor-pointer transition-all duration-200 ease-in-out peer-checked:border-green-500 peer-checked:bg-green-50/50 hover:border-green-300">
+                    <div class="flex items-center justify-between gap-4">
+                      <div class="flex items-center gap-4 grow">
+                        <div
+                          class="w-14 h-14 bg-gray-100 text-gray-400 rounded-xl flex items-center justify-center transition-colors peer-checked:bg-blue-500 peer-checked:text-white">
+                          <i class="fas fa-credit-card text-xl"></i>
+                        </div>
+                        <div>
+                          <h3 class="font-bold text-lg text-gray-900">Pay Online</h3>
+                          <p class="text-sm text-gray-500">
+                            Secure payment with Credit/Debit Card via Stripe
+                          </p>
+                          <div class="flex items-center gap-2 mt-1">
+                            <i class="fab fa-cc-visa text-2xl text-blue-800"></i>
+                            <i class="fab fa-cc-mastercard text-2xl text-orange-600"></i>
+                            <i class="fab fa-cc-amex text-2xl text-blue-500"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+   
+            <div
+              class="md:col-span-1 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm h-fit sticky top-8 space-y-5">
+              <div class="pt-2">
+                <button type="submit"
+                  class="w-full py-3.5 px-4 rounded-lg bg-green-600 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-green-700 transition-colors hidden group-has-[#payment-cod:checked]:flex">
+                  <i class="fas fa-shopping-bag"></i>
+                  Place Order
+                </button>
+
+                <button type="submit"
+                  class="w-full py-3.5 px-4 rounded-lg bg-green-600 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-green-700 transition-colors hidden group-has-[#payment-card:checked]:flex">
+                  <i class="fas fa-shield-alt"></i>
+                  Proceed to Payment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-4 sticky top-10">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="bg-[#138D46] text-white p-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-basket-shopping"></i>
+              <span class="font-bold">Order Summary</span>
+            </div>
+            <span class="bg-white/20 px-2 py-0.5 rounded text-xs">4 items</span>
+          </div>
+
+          <div class="p-6">
+            <div class="max-h-60 overflow-y-auto mb-6 pr-2 space-y-4 custom-scrollbar">
+              @if (isLoading()) {
+      @for (i of [1,2,3]; track $index) {
+        <div class="flex items-center gap-4 rounded-2xl bg-gray-50 p-4 animate-pulse">
+          <div class="w-16 h-16 rounded-lg bg-gray-200"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+      }
+    }@else {
+      @for (item of cartDetails().products; track item.product._id) {
+              <div class="flex items-center gap-4 rounded-2xl  bg-gray-50 p-4  cursor-pointer hover:bg-gray-100">
+                <img [src]="item.product.imageCover"
+                  class="w-16 h-16 rounded-lg object-cover bg-gray-50 border border-gray-100" />
+                <div class="flex-1">
+                  <h4 class="text-sm font-bold text-gray-800 line-clamp-1">{{item.product.title}}</h4>
+                  <div class="flex justify-between items-center mt-1">
+                    <span class="text-xs text-gray-500">{{item.count}} × {{item.price}} EGP</span>
+                    <span class="text-sm font-bold text-gray-900">{{item.count * item.price}}</span>
+                  </div>
+                </div>
+              </div>
+              }
+    }
+              
+            </div>
+
+            <div class="space-y-3 border-t border-gray-100 pt-4">
+              <div class="flex justify-between text-gray-600 text-sm">
+                <span>Subtotal</span>
+                <span class="font-bold text-gray-900">{{cartDetails().totalCartPrice}} EGP</span>
+              </div>
+              <div class="flex justify-between text-[#138D46] text-sm">
+                <span>Shipping</span>
+                <span class="font-bold uppercase italic">Free</span>
+              </div>
+              <div class="flex justify-between items-center pt-2">
+                <span class="font-extrabold text-gray-900">Total</span>
+                <div class="text-right text-[#138D46]">
+                  <span class="text-2xl font-black">{{cartDetails().totalCartPrice}}</span>
+                  <span class="text-[10px] ml-1 font-bold">EGP</span>
+                </div>
+              </div>
+            </div>
+
+
+            <div
+              class="flex items-center justify-center gap-4 mt-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <div class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-[#138D46]"></i> Secure
+              </div>
+              <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-blue-500"></i> Delivery</div>
+              <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div class="flex items-center gap-1.5"><i class="fa-solid fa-rotate-left text-orange-500"></i> Returns
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>

@@ -1,0 +1,219 @@
+<section>
+  
+
+  <div class="max-w-full py-10 mx-auto px-4 font-sans text-[#001d3d]">
+    <nav class="flex text-sm text-gray-400 mb-6" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <a routerLink="/" routerLinkActive="" [routerLinkActiveOptions]="{ exact: true }"
+            class="inline-flex items-center hover:text-primary transition-colors">
+            <i class="fas fa-home mr-2 text-xs"></i>
+            Home
+          </a>
+        </li>
+        <li class="flex items-center">
+          <span class="mx-2 text-gray-300">/</span>
+          <span class="font-medium text-[#001d3d]">My Orders</span>
+        </li>
+      </ol>
+    </nav>
+    @if (!isLoadingOrders() && ordersList().length === 0) {
+      <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-40">
+        <div class="relative mb-8">
+            <div class="mx-auto w-24 h-24 bg-gray-200 rounded-2xl flex items-center justify-center">
+                <i class="fa-solid fa-box-open text-gray-400 text-4xl"></i>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            No orders yet
+        </h2>
+        <p class="text-gray-500 mb-8 font-medium">
+            When you place orders, they'll appear <br> here so you can track them.
+        </p>
+
+        <button routerLink="/shop"
+            class="inline-flex items-center justify-center bg-[#19a449] hover:bg-[#158a3d] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 group cursor-pointer">
+            <i class="fa-solid fa-bag-shopping me-2 transition-transform group-hover:translate-x-1"></i>
+            Browse Products
+           
+        </button>
+    </div>
+    }
+    @else {
+       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div class="flex items-center gap-4">
+        <div class="bg-[#19a449] p-3.5 rounded-2xl shadow-lg shadow-green-100 flexitems-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-extrabold text-[#001d3d]">My Orders</h1>
+          <p class="text-gray-500 font-medium">Track and manage your {{ ordersList().length }} orders</p>
+        </div>
+      </div>
+      <a routerLink="/shop"
+        class="flex items-center gap-2 text-[#19a449] font-bold hover:bg-green-50 p-3 rounded-2xl transition-all cursor-pointer">
+        <i class="fa-solid fa-lock text-xs"></i>
+        Continue Shopping
+      </a>
+    </div>
+@if (isLoadingOrders()) {
+  @for (i of [1,2,3]; track $index) {
+    <div class="bg-white border border-gray-100 rounded-3xl p-5 mb-6 animate-pulse">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <div class="w-24 h-24 bg-gray-200 rounded-2xl"></div>
+        <div class="flex-grow space-y-3 w-full">
+          <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div class="h-6 bg-gray-200 rounded w-1/2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+        <div class="w-24 h-10 bg-gray-200 rounded-2xl"></div>
+      </div>
+    </div>
+  }
+}
+       @else {
+         @for (order of ordersList(); track order._id) {
+    <div
+      class="bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow overflow-hidden mb-6">
+
+      <div class="p-5 flex flex-col md:flex-row items-center justify-between gap-6">
+
+        <div class="relative flex-shrink-0">
+          <div class="w-24 h-24 bg-gray-50 rounded-2xl  flex items-center justify-center p-3 overflow-hidden">
+            <img [src]="order.cartItems[0].product.imageCover" [alt]="order.cartItems[0].product.title"
+              class="max-w-full max-h-full object-contain">
+          </div>
+
+          @let countItems = order.cartItems.reduce((acc, item) => acc + item.count, 0) - 1;
+
+          @if (countItems > 0) {
+          <span
+            class="absolute -top-2 -right-2 bg-[#001d3d] text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+            +{{ countItems }}
+          </span>
+          }
+        </div>
+
+        <div class="flex-grow space-y-2">
+          <div class="flex items-center gap-2">
+            <span
+              class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <i class="fa-regular fa-clock text-[10px]"></i> Processing
+            </span>
+          </div>
+          <h3 class="text-xl font-extrabold flex items-center gap-2"><span class="text-gray-400 font-normal">#</span> {{
+            order.id || '964' }}</h3>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400">
+            <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> {{ order.createdAt | date
+              }}</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-briefcase"></i> {{ order.cartItems.reduce( (acc,
+              item) => acc + item.count, 0 ) }} items</span>
+          </div>
+          <div class="pt-2"><span class="text-2xl font-black">{{ order.totalOrderPrice }}</span><span
+              class="text-xs font-bold text-gray-500 ml-1">EGP</span></div>
+        </div>
+
+        <div class="flex flex-col items-end gap-10 flex-shrink-0">
+          <button 
+          class="text-gray-400 hover:text-blue-600 bg-gray-50 p-2.5 rounded-lg transition-colors"><i
+              class="fa-solid fa-money-bill"></i></button>
+
+          <button (click)="toggleDetails(order._id)"
+            [ngClass]="openedOrderId() === order._id ? 'bg-green-600 text-white shadow-lg shadow-green-200' : 'bg-gray-50 text-gray-900'"
+            class="border border-gray-100 focus:outline-none transition-all duration-300 font-semibold cursor-pointer rounded-2xl text-sm px-5 py-3 flex items-center gap-2">
+            {{ openedOrderId() === order._id ? 'Hide' : 'Details' }}
+            <i class="fa-solid transition-transform duration-500" [class.rotate-180]="openedOrderId() === order._id"
+              [ngClass]="openedOrderId() === order._id ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid transition-all duration-500 ease-in-out border-gray-100"
+        [class.grid-rows-[1fr]]="openedOrderId() === order._id" [class.grid-rows-[0fr]]="openedOrderId() !== order._id"
+        [class.border-t]="openedOrderId() === order._id">
+
+        <div class="overflow-hidden bg-gray-50">
+          <div class="p-6">
+            <div class="flex items-center gap-2 text-[#001d3d] font-bold mb-5">
+              <i class="fa-solid fa-receipt text-green-600"></i>
+              <span>Order Items</span>
+            </div>
+
+            <div class="space-y-4">
+              @for (item of order.cartItems; track item._id) {
+              <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-16 h-16 flex-shrink-0 bg-gray-50 rounded-xl  flex items-center justify-center p-2.5 overflow-hidden">
+                    <img [src]="item.product.imageCover" class="max-w-full max-h-full object-contain"
+                      [alt]="item.product.title">
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-[#001d3d] line-clamp-1">{{ item.product.title }}</h4>
+                    <p class="text-xs text-gray-400 font-medium">{{ item.count }} x {{ item.price }} EGP</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-black text-lg">{{ item.price }} <span
+                      class="text-[10px] text-gray-400 uppercase ml-1">EGP</span></p>
+                </div>
+              </div>
+              }
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-6 border-t border-gray-200">
+
+                <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                  <div class="flex items-center gap-2 text-[#001d3d] font-bold mb-4">
+                    <i class="fa-solid fa-location-dot text-blue-600"></i>
+                    <span>Delivery Address</span>
+                  </div>
+                  <div class="space-y-1">
+                    <p class="text-sm font-bold text-[#001d3d]">{{ order.shippingAddress.city }}</p>
+                    <p class="text-xs text-gray-500">{{ order.shippingAddress.details }}</p>
+                    <div class="flex items-center gap-2 mt-3 text-xs text-gray-400">
+                      <i class="fa-solid fa-phone text-[10px]"></i>
+                      <span>{{ order.shippingAddress.phone }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-yellow-50 p-5 rounded-2xl border border-yellow-100 shadow-sm">
+                  <div class="flex items-center gap-2 text-[#001d3d] font-bold mb-4">
+                    <i class="fa-solid fa-clock-rotate-left text-yellow-600"></i>
+                    <span>Order Summary</span>
+                  </div>
+                  <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                      <span class="text-gray-500">Subtotal</span>
+                      <span class="font-bold text-[#001d3d]">{{ order.totalOrderPrice }} EGP</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-gray-500">Shipping</span>
+                      <span class="text-green-600 font-bold">Free</span>
+                    </div>
+                    <div class="pt-3 border-t border-yellow-200 flex justify-between items-center">
+                      <span class="font-black text-[#001d3d]">Total</span>
+                      <span class="text-xl font-black text-[#001d3d]">{{ order.totalOrderPrice }} EGP</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    }
+    }
+       }
+   
+ 
+  </div>
+</section>

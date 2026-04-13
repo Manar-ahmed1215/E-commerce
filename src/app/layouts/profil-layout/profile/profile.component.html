@@ -1,0 +1,73 @@
+<section class="min-h-screen bg-gray-50">
+    <div class="bg-[#22c55e] p-8 text-white">
+        <div class="container mx-auto">
+            <nav class="flex mb-4 text-sm" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3 text-green-100">
+                    <li class="inline-flex items-center">
+                        <a routerLink="/" class="font-medium hover:text-white transition-colors cursor-pointer">Home</a>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span> 
+                        <span class="font-medium text-white">My Account</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <div class="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl shadow-inner">
+                    <i class="fa-solid fa-user text-3xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-white tracking-tight">My Account</h1>
+                    <p class="text-white/90 font-light mt-1">Manage your addresses and account settings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto py-10 px-4 font-sans">
+        <div class="grid grid-cols-12 gap-6">
+            
+            <div class="col-span-12 md:col-span-3">
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-2">
+                    <h2 class="text-sm font-bold text-slate-800 px-4 py-3 border-b border-gray-50 mb-2">Account Menu</h2>
+                    
+                    <ul class="space-y-1">
+                        <li>
+                            <a routerLink="address" 
+                               routerLinkActive="bg-green-50 text-green-600 border-green-100" 
+                               class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-600 hover:bg-gray-50 border border-transparent transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-gray-100 text-slate-400 group-[.active]:bg-green-600 group-[.active]:text-white flex items-center justify-center transition-colors">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <span class="font-medium text-[15px]">My Addresses</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-[.active]:text-green-600"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLink="setting" 
+                               routerLinkActive="bg-green-50 text-green-600 border-green-100" 
+                               class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-600 hover:bg-gray-50 border border-transparent transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-gray-100 text-slate-400 group-[.active]:bg-green-600 group-[.active]:text-white flex items-center justify-center transition-colors">
+                                        <i class="fa-solid fa-gear"></i>
+                                    </div>
+                                    <span class="font-medium text-[15px]">Settings</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-gray-300 group-[.active]:text-green-600"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-span-12 md:col-span-9">
+                <router-outlet></router-outlet>
+            </div>
+
+        </div>
+    </div>
+</section>

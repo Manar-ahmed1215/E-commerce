@@ -1,0 +1,138 @@
+<section class="min-h-screen bg-gray-50">
+    <div class="bg-[#22c55e] p-8 text-white">
+        <div class="container mx-auto">
+
+            <nav class="flex mb-4 text-sm" aria-label="Breadcrumb">
+                 @if (isLoading()) {
+                <div class="h-4 bg-white/20 rounded w-48 animate-pulse"></div>
+                } @else{
+                   <ol class="inline-flex items-center space-x-1 md:space-x-3 text-green-100">
+                    <li class="inline-flex items-center">
+                        <a (click)="backToHome()"
+                            class="font-medium hover:text-white transition-colors cursor-pointer">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span>
+                        <a routerLink="/categories"
+                            class="font-medium hover:text-white transition-colors cursor-pointer">
+                            Categories
+                        </a>
+                    </li>
+
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span>
+                        <a [routerLink]="['/category-details' , categoryDetails()._id, categoryDetails().slug]"
+                            class="font-medium hover:text-white transition-colors cursor-pointer">
+                            {{categoryDetails().name}}
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="mx-2 text-white/70">/</span>
+                        <span class="font-medium text-white transition-colors cursor-pointer">
+                            {{categoryDetails().name}}
+                        </span>
+                    </li>
+                </ol> 
+                }
+                
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <div class="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl shadow-inner border border-white/5">
+                    <i class="fa-solid fa-folder-open text-3xl text-white"></i>
+                </div>
+                <div>
+                     @if (isLoading()) {
+                    <div class="h-8 bg-white/30 rounded w-40 mb-2 animate-pulse"></div>
+                    <div class="h-4 bg-white/20 rounded w-60 animate-pulse"></div>
+                    } @else {
+                          <h1 class="text-4xl font-extrabold tracking-tight">{{categoryDetails().name}}</h1>
+                    <p class="text-lg opacity-90 mt-1">Browse products in {{categoryDetails().name}}</p>
+                    }
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="container mx-auto py-8 px-4">
+    <div class="flex items-center flex-wrap gap-4 mb-6">
+        <div class="flex items-center text-gray-700 font-medium">
+            <i class="fa-solid fa-filter mr-2 text-sm text-gray-500"></i>
+            <span>Active Filters:</span>
+        </div>
+
+        @if (categoryDetails().name) {
+        <div class="flex items-center bg-green-50 text-green-700 px-3 py-1.5 rounded-full border border-green-100 shadow-sm transition-all hover:bg-green-100">
+            <i class="fa-solid fa-folder-open mr-2 text-xs opacity-70"></i>
+            <span class="text-sm font-semibold">{{ categoryDetails().name }}</span>
+            <button routerLink="/shop" class="ml-2 hover:text-red-500 transition-colors cursor-pointer">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+        </div>
+        }
+
+        <button routerLink="/shop" class="hover:text-blue-800 text-sm font-medium underline underline-offset-4 decoration-1 cursor-pointer">
+            Clear all
+        </button>
+    </div>
+
+    <div class="border-t border-gray-100 pt-4">
+        <p class="text-gray-500 text-sm font-medium">
+            Showing <span class="text-gray-900 font-bold">{{ product().length }}</span> products
+        </p>
+    </div>
+
+    @if (isLoading()) {
+        <div class="mt-5 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            @for (item of [1,2,3,4,5,6,7,8]; track $index) {
+               <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 animate-pulse">
+                <div class="bg-gray-200 h-48 rounded-xl mb-4"></div>
+                <div class="h-3 bg-gray-200 rounded w-1/4 mb-2"></div>
+                <div class="h-5 bg-gray-200 rounded w-3/4 mb-4"></div>
+                <div class="flex justify-between items-center">
+                    <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+                    <div class="h-8 w-8 bg-gray-200 rounded-full"></div>
+                </div>
+            </div>
+            }
+        </div>
+    } 
+    @else {
+        @if (product().length === 0) {
+            <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-20">
+                <div class="relative mb-8">
+                    <div class="mx-auto w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-box-open text-gray-400 text-4xl"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">No Products Found</h2>
+                <p class="text-gray-500 mb-8 font-medium">No products match your current filters.</p>
+                <button routerLink="/shop" class="inline-flex items-center justify-center bg-[#19a449] hover:bg-[#158a3d] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 group cursor-pointer">
+                    View All Products
+                    <i class="fa-solid fa-arrow-right ms-2 transition-transform group-hover:translate-x-1"></i>
+                </button>
+            </div>
+        } 
+        @else {
+            <div class="mt-5 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                @for (product of product(); track product._id) {
+                    <app-card [product]='product'></app-card>
+                }
+            </div>
+        }
+    }
+    <div class="flex items-center justify-center pt-5">
+            <pagination-controls (pageChange)="onPageChange($event)" id="foo" [maxSize]="9" [directionLinks]="true"
+                [autoHide]="true" [responsive]="true" previousLabel="" nextLabel=""
+               
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+        </div>
+</div>
+
+</section>

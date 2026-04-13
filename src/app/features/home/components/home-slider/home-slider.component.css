@@ -1,0 +1,25 @@
+swiper-container::part(button-prev),
+swiper-container::part(button-next){
+    background-color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: var(--color-primary);
+    padding: 14px;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.354);
+}
+swiper-container::part(bullet) {
+    background-color: #fff;
+    width: 15px;
+    height: 15px;
+    transition: all 0.2s; 
+}
+
+
+swiper-container::part(bullet-active) {
+    background-color: #fff;
+    width: 35px;
+    height: 13px;
+    border-radius: 12px;
+    transition: width 0.6s ease-in-out, height 0.6s ease-in-out;
+}
