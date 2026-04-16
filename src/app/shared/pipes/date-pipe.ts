@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'customDate', // يفضل تسميه اسم مختلف عن Date بتاع أنجلر عشان ميتلخبطوش
+  name: 'customDate', 
   standalone: true
 })
 export class CustomDatePipe implements PipeTransform {
